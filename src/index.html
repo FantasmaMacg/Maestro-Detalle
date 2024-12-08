@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi aplicación</title>
-    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <title>Botones</title>
 </head>
 <body>
-    <button id="boton">Cómeme</button>
+    <h1>Desactiva la bomba</h1>
+    
+    <h3>Reglas:</h3>
+    <p>1. Haz clic en el botón "Abrir bomba" para comenzar el juego.</p>
+    <p>2. Resuelve las adivinanzas en el orden correcto.</p>
+    <p>3. Después de cada adivinanza, haz clic en el botón correspondiente.</p>
+    <p>4. Si cortas el cable incorrecto, perderás el juego.</p>
+    <p>5. Tienes 10 segundos para desactivar la bomba después de abrirla.</p>
+    <button id="Primero">Abrir bomba</button>
+  
 
-    <h1>Maestro</h1>
-    <ul id="maestro">
-
-    </ul>
-    <div id="detalle" hidden>
-        <h1>Detalle</h1>
-        <form>
-            <input type="hidden" id="id" name="id">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre">
-            <label for="apellido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido">
-        </form>
-    </div>
+    <textarea name="Texto" id="Quinto" cols="30" rows="10"></textarea>
+    
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
     <script src="./javascript/index.js"></script>
 </body>
 </html>
