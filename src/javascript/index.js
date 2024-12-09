@@ -4,6 +4,7 @@ $(document).ready(function() {
         "En los campos lo puedes ver, en las hojas lo puedes entender.",
         "En los campos lo encuentras en la flor, y también en el maíz, lleno de sabor.",
     ];
+   
 
     let indice = 0;
     let tiempoRestante = 10;
@@ -72,7 +73,7 @@ $(document).ready(function() {
                 alert("¡La bomba explotó! ¡Juego terminado!");
                 reiniciarJuego();
             }
-        }, 1000);
+        }, 2000);
     }
 
     function reiniciarJuego() {
@@ -97,7 +98,7 @@ $(document).ready(function() {
     $('#Primero').click(function() {
         iniciarJuego();
         if (indice === 0) {
-            alert("Tienes 10 segundos para parar la bomba.");
+            alert("Tienes 20 segundos para parar la bomba.");
             agregarValor(informacion[indice]);
             indice++;
             $('#Primero').text('Cerrar Bomba');
