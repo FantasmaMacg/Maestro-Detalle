@@ -1,3 +1,5 @@
+const { get } = require("jquery");
+
 $(document).ready(function() {
     const informacion = [
         "Es frío y profundo, y también sereno, en la naturaleza es un tono pleno.",
@@ -106,4 +108,6 @@ $(document).ready(function() {
             reiniciarJuego();
         }
     });
+
+    $(get)
 });
