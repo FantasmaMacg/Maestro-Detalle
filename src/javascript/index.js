@@ -1,7 +1,8 @@
 $(document).ready(function() {
  
     $('#Primero').click(function() {
-        $.get("https://my-json-server.typicode.com/typicode/demo/posts", function(data) {
+        $.get("https://my-json-server.typicode.com/typicode/demo/posts",
+        function(data) {
             $('#1').val('Bien'); 
         }).fail(function() {
             $('#1').val('Error al realizar GET');
@@ -11,7 +12,6 @@ $(document).ready(function() {
     
     $('#Segundo').click(function() {
         $.post("https://my-json-server.typicode.com/typicode/demo/posts", 
-        { title: "Nuevo Post" }, 
         function(data) {
             $('#2').val('Bien'); 
         }).fail(function() {
@@ -24,8 +24,7 @@ $(document).ready(function() {
         $.ajax({
             url: "https://my-json-server.typicode.com/typicode/demo/posts/1",
             type: "PUT",
-            data: JSON.stringify({ title: "Actualización PUT" }),
-            contentType: "application/json",
+          
             success: function(data) {
                 $('#3').val('Bien'); o
             },
@@ -40,8 +39,7 @@ $(document).ready(function() {
         $.ajax({
             url: "https://my-json-server.typicode.com/typicode/demo/posts/1",
             type: "PATCH",
-            data: JSON.stringify({ title: "Actualización PATCH" }),
-            contentType: "application/json",
+           
             success: function(data) {
                 $('#4').val('Bien'); 
             },
