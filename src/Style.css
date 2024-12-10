@@ -1,0 +1,25 @@
+.mio{
+    background-color: brown;
+}
+
+
+h1{
+    
+    color: white;
+    border: none;
+
+}
+
+button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+
