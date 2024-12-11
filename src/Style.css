@@ -2,7 +2,9 @@
     background-color: brown;
 }
 
-
+.mio > button{
+    background-color: #38cc33;
+}
 h1{
     
     color: white;

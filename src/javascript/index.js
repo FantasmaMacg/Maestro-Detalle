@@ -10,6 +10,8 @@ $(document).ready(function () {
             });
     });
 
+    // Lista , Lee 
+    //PROXI en todas las herramientas 
 
     $('#Segundo').click(function () {
         $.post("https://my-json-server.typicode.com/typicode/demo/posts",
