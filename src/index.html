@@ -9,28 +9,23 @@
     <link rel="stylesheet" href="Style.css">
 </head>
 <body>
-    <h1><center>Botones GET, POST, PUT, PATCH and DELETE.</center></h1>
-    
-    
-    <div class="row g-0 text-center">
-        <div class="col-sm-1 col-md-4"> <button id="Primero">GET</button>
-            <input id="1" type="text"></div>
-        <div class="col-sm-1 col-md-4""><button id="Segundo">POST </button>
-            <input id="2" type="text"></div>
-        <div class="col-sm-1 col-md-4"">   <button id="Tercero">PUT </button>
-            <input id="3" type="text"></div>        
-            
-      </div>
-    
-    <div class="row g-0 text-center">
-        <div class="col-sm-1 col-md-6"><button id="Cuarto">PATCH</button>
-            <input id="4" type="text"></div>
-        <div class="col-1 col-md-6"> <button  id="Cinco">DELETE</button>
-            <input id="5" type="text"></div>
-      </div>
-    <div class="row"></div>  
-    
-    
+   
+   <div id="maestro">
+    <h2>Maestro</h2>
+    <button id="refrescar">Refrescar</button>
+    <button id="nuevo">Nuevo</button>
+    <div id="listado">
+       
+    </div>
+</div>
+
+<div id="detalle" style="display:none;">
+    <h2>Detalle</h2>
+    <input type="text" id="nombre" placeholder="Nombre">
+    <input type="text" id="apellido" placeholder="Apellido">
+    <button id="crear">Crear</button>
+    <button id="cancelar">Cancelar</button>
+</div>
 
         
        
