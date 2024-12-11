@@ -1,158 +1,151 @@
 $(document).ready(function () {
-    refrescar();
+    inicializarEventos();
 
-
-    $('#Primero').click(function LeerListar() {
-        $.get("https://my-json-server.typicode.com/desarrollo-seguro/dato/db",
-            function (data) {
-                let listadoHtml = "<ul>";
-                data.solicitudes.forEach(item => {
-                    listadoHtml += `<li>${item.nombre} ${item.apellido} <button class="editar" data-id="${item.id}">Editar</button> <button class="borrar" data-id="${item.id}">Borrar</button></li>`;
-                });
-                listadoHtml += "</ul>";
-                $('#1').val('Listados: ' + listadoHtml);
-            }).fail(function () {
-                $('#1').val('Error al realizar GET');
-            });
-    });
-
-    //GET: Leer/Listar
-
-    $('#Segundo').click(function Crear() {
-        $.post("https://my-json-server.typicode.com/desarrollo-seguro/dato/db",
-            {
-                nombre: "Nuevo",
-                apellido: "Usuario"
-            },
-            function (data) {
-                $('#2').val('Bien');
-            }).fail(function () {
-                $('#2').val('Error al realizar POST');
-            });
-    });
-
-    //POST: Crear
-
-    $('#Tercero').click(function ModificarReemplazar() {
-        let id = 1; // Aquí puedes usar el ID que desees modificar
-        $.ajax({
-            url: `https://my-json-server.typicode.com/desarrollo-seguro/dato/db/solicitudes/${id}`,
-            type: "PUT",
-            data: {
-                nombre: "Nombre Modificado",
-                apellido: "Apellido Modificado"
-            },
-            success: function (data) {
-                $('#3').val('Bien');
-            },
-            error: function () {
-                $('#3').val('Error al realizar PUT');
-            }
-        });
-    });
-    //PUT: Modificar (reemplazar)
-
-    $('#Cuarto').click(function ModificarParcial() {
-        let id = 1; // Aquí puedes usar el ID que desees modificar
-        $.ajax({
-            url: `https://my-json-server.typicode.com/desarrollo-seguro/dato/db/solicitudes/${id}`,
-            type: "PATCH",
-            data: {
-                nombre: "Nombre Parcial Modificado"
-            },
-            success: function (data) {
-                $('#4').val('Bien');
-            },
-            error: function () {
-                $('#4').val('Error al realizar PATCH');
-            }
-        });
-    });
-    //PATCH: Modificar (parcial)
-
-    $('#Cinco').click(function Borrar() {
-        let id = 1; // Aquí puedes usar el ID que desees borrar
-        $.ajax({
-            url: `https://my-json-server.typicode.com/desarrollo-seguro/dato/db/solicitudes/${id}`,
-            type: "DELETE",
-            success: function () {
-                $('#5').val('Eliminado correctamente');
-            },
-            error: function () {
-                $('#5').val('Error al realizar DELETE');
-            }
-        });
-    });
-    //DELETE: Borrar
-
-    // Maestro Detalle
-    function refrescar() {
-        // Llamar a GET para listar los datos
-        $.get("https://my-json-server.typicode.com/desarrollo-seguro/dato/db", function(data) {
-            let listadoHtml = "<ul>";
-            data.solicitudes.forEach(item => {
-                listadoHtml += `<li>${item.nombre} ${item.apellido} <button class="editar" data-id="${item.id}">Editar</button> <button class="borrar" data-id="${item.id}">Borrar</button></li>`;
-            });
-            listadoHtml += "</ul>";
-            $('#listado').html(listadoHtml);
-        });
-    };
-
-    $('#nuevo').click(function() {
-        // Mostrar el formulario de detalle para crear
-        $('#maestro').show();
-        $('#detalle').show();
-    });
-
-    $('#cancelar').click(function() {
-        // Volver a la vista de listado
-        $('#detalle').hide();
-        $('#maestro').show();
-    });
-    $('#refrescar').click(function(){
-        $('#detalle').hide();
-       
+    function inicializarEventos() {
+        $('#refrescar').click(refrescar);
+        $('#nuevo').click(mostrarFormularioCrear);
+        $('#cancelar').click(cancelarAccion);
+        $(document).on('click', '.editable', editarElemento);
+        $(document).on('click', '.borrar', borrarElemento);
         refrescar();
-       
+    }
 
+   
+    function refrescar() {
+        $('#cargando').show();
+        $('#listado tbody').html('');
+        obtenerDatos();
+    }
 
-    });
-
-    // Acciones de editar
-    $(document).on('click', '.editar', function() {
-        let id = $(this).data('id');
-        $.get(`https://my-json-server.typicode.com/desarrollo-seguro/dato/db/solicitudes/${id}`, function(data) {
-            $('#nombre').val(data.nombre);
-            $('#apellido').val(data.apellido);
-            $('#crear').text('Modificar');
-            $('#crear').off('click').off('click', function() {
-                $.ajax({
-                    url: `https://my-json-server.typicode.com/desarrollo-seguro/dato/db/solicitudes/${id}`,
-                    type: "PUT",
-                    data: {
-                        nombre: $('#nombre').val(),
-                        apellido: $('#apellido').val()
-                    },
-                    success: function() {
-                        $('#detalle').hide();
-                        $('#maestro').show();
-                        $('#refrescar').click();
-                    }
-                });
-            });
+    function mostrarFormularioCrear() {
+        $('#detalle').show();
+        $('#nombre').val('');
+        $('#apellido').val('');
+        $('#crear').text('Crear').off('click').click(function () {
+            let nuevoElemento = {
+                nombre: $('#nombre').val(),
+                apellido: $('#apellido').val()
+            };
+            crearElemento(nuevoElemento);
         });
-    });
+    }
 
-    // Borrar un elemento
-    $(document).on('click', '.borrar', function() {
+    function cancelarAccion() {
+        $('#detalle').hide();
+        refrescar();
+    }
+
+    function editarElemento() {
         let id = $(this).data('id');
+        obtenerElementoPorId(id);
+    }
+
+    function borrarElemento() {
+        let id = $(this).data('id');
+        eliminarElemento(id);
+    }
+
+   
+    function obtenerDatos() {
+        $.get("https://my-json-server.typicode.com/desarrollo-seguro/dato/db", function (data) {
+            let listadoHtml = '';
+            data.solicitudes.forEach(item => {
+                listadoHtml += `
+                    <tr class="listado-item" data-id="${item.id}">
+                        <td class="editable" data-id="${item.id}">${item.nombre}</td>
+                        <td class="editable" data-id="${item.id}">${item.apellido}</td>
+                        <td>
+                            <button class="btn btn-danger borrar" data-id="${item.id}">Borrar</button>
+                        </td>
+                    </tr>`;
+            });
+            $('#listado tbody').html(listadoHtml);
+            $('#cargando').hide();
+            $('#listado').show();
+        }).fail(function () {
+            mostrarAlerta('Error al cargar los datos', 'danger');
+        });
+    }
+
+    function crearElemento(nuevoElemento) {
+        $.post("https://my-json-server.typicode.com/typicode/demo/posts", nuevoElemento, function () {
+            mostrarAlerta('Elemento creado correctamente', 'success');
+            cancelarAccion();
+            refrescar();
+        }).fail(function () {
+            mostrarAlerta('Error al crear el elemento', 'danger');
+            cancelarAccion();
+            refrescar();
+        });
+    }
+
+    function actualizarElemento(id, datosActualizados) {
         $.ajax({
-            url: `https://my-json-server.typicode.com/desarrollo-seguro/dato/db/solicitudes/${id}`,
-            type: "DELETE",
-            success: function() {
-                $('#refrescar').click();
+            url: `https://my-json-server.typicode.com/typicode/demo/posts/${id}`,
+            type: 'PUT',
+            data: datosActualizados,
+            success: function () {
+                mostrarAlerta('Elemento actualizado correctamente', 'success');
+                cancelarAccion();
+                refrescar();
+            },
+            error: function () {
+                mostrarAlerta('Error al actualizar el elemento', 'danger');
+                cancelarAccion();
+                refrescar();
             }
         });
-    });
+    }
 
+    function eliminarElemento(id) {
+        $.ajax({
+            url: `https://my-json-server.typicode.com/typicode/demo/posts/${id}`,
+            type: 'DELETE',
+            success: function () {
+                mostrarAlerta('Elemento eliminado correctamente', 'success');
+                refrescar();
+            },
+            error: function () {
+                mostrarAlerta('Error al eliminar el elemento', 'danger');
+                refrescar();
+            }
+        });
+    }
+
+    function obtenerElementoPorId(id) {
+        $.get("https://my-json-server.typicode.com/desarrollo-seguro/dato/db", function (data) {
+            let elemento = data.solicitudes.find(item => item.id === id);
+            if (!elemento) {
+                mostrarAlerta('Error: No se encontró el elemento.', 'danger');
+                return;
+            }
+
+            $('#detalle').show();
+            $('#nombre').val(elemento.nombre);
+            $('#apellido').val(elemento.apellido);
+            $('#crear').text('Guardar').off('click').click(function () {
+                let datosActualizados = {
+                    nombre: $('#nombre').val(),
+                    apellido: $('#apellido').val()
+                };
+                actualizarElemento(id, datosActualizados);
+            });
+        }).fail(function () {
+            mostrarAlerta('Error al obtener el elemento', 'danger');
+        });
+    }
+
+    
+    function mostrarAlerta(mensaje, tipo) {
+        let alerta = `
+            <div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+                ${mensaje}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>`;
+        $('#alerta').html(alerta);
+        setTimeout(function () {
+            $('#alerta').html('');
+        }, 1000);
+    }
+      // cambio de servidor simulado ya que 'https://my-json-server.typicode.com/desarrollo-seguro/dato/db' no permite modificaciones. Por esta razón, se utiliza 'https://my-json-server.typicode.com/typicode/demo/posts' para probar correctamente las operaciones de creación, actualización y eliminación."
 });

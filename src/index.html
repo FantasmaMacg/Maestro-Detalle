@@ -10,26 +10,45 @@
 </head>
 <body>
    
-   <div id="maestro">
-    <h2>Maestro</h2>
-    <button id="refrescar">Refrescar</button>
-    <button id="nuevo">Nuevo</button>
-    <div id="listado">
-       
-    </div>
-</div>
-
-<div id="detalle" style="display:none;">
-    <h2>Detalle</h2>
-    <input type="text" id="nombre" placeholder="Nombre">
-    <input type="text" id="apellido" placeholder="Apellido">
-    <button id="crear">Crear</button>
-    <button id="cancelar">Cancelar</button>
-</div>
-
+    <div class="container mt-4">
+        <h1>Maestro</h1>
+        <button id="refrescar" class="btn btn-primary mb-3">Refrescar</button>
+        <button id="nuevo" class="btn btn-success mb-3">Nuevo</button>
+    
         
+        <div id="cargando" style="display:none;" class="text-center mb-3">Cargando...</div>
+    
        
+        <table id="listado" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    
+        <!-- Detalle -->
+        <div id="detalle" style="display:none;">
+            <h2>Detalle</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" id="nombre" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" id="apellido" class="form-control">
+                </div>
+                <button type="button" id="crear" class="btn btn-primary">Crear</button>
+                <button type="button" id="cancelar" class="btn btn-secondary">Cancelar</button>
+            </form>
+        </div>
     </div>
+    <div id="alerta" class="alert-container"></div>
+
    
     <script src="../node_modules/jquery/dist/jquery.js"></script>
     <script src="./javascript/index.js"></script>
